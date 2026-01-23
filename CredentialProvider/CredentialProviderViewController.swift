@@ -13,6 +13,10 @@ import SwiftCBOR
 private let logger = Logger(subsystem: "com.malt03.LocalPasskeyManager", category: "CredentialProvider")
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
+    @IBOutlet var errorLabel: NSTextField!
+    
+    private var error: Error?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         logger.info("viewDidLoad")
@@ -20,13 +24,10 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     
     override func prepareInterface(forPasskeyRegistration registrationRequest: any ASCredentialRequest) {
         func failed(_ error: Error) {
-            let alert = NSAlert(error: error)
-            alert.runModal()
-            extensionContext.cancelRequest(
-                withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue)
-            )
+            errorLabel.stringValue = "Failed: \(error)"
+            self.error = error
         }
-
+        
         guard
             let passkeyRequest = registrationRequest as? ASPasskeyCredentialRequest,
             let identity = passkeyRequest.credentialIdentity as? ASPasskeyCredentialIdentity
@@ -64,8 +65,16 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     
     @IBAction func cancel(_ sender: AnyObject?) {
         logger.info(".cancel called")
-        let error = NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue)
-        self.extensionContext.cancelRequest(withError: error)
+        
+        if self.error == nil {
+            extensionContext.cancelRequest(
+                withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue)
+            )
+        } else {
+            extensionContext.cancelRequest(
+                withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue)
+            )
+        }
     }
 }
 
