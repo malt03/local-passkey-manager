@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Security
 
 let group = "group.com.malt03.LocalPasskeyManager"
 
