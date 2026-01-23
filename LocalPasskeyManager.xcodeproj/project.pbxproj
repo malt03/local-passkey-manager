@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3220DBF22F23AFB700D69C2F /* SwiftCBOR in Frameworks */ = {isa = PBXBuildFile; productRef = 3220DBF12F23AFB700D69C2F /* SwiftCBOR */; };
+		3220DC0B2F23E98400D69C2F /* SwiftCBOR in Frameworks */ = {isa = PBXBuildFile; productRef = 3220DC0A2F23E98400D69C2F /* SwiftCBOR */; };
 		32F4E04D2F22348F0035A89B /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32F4E04C2F22348F0035A89B /* AuthenticationServices.framework */; };
 		32F4E0582F22348F0035A89B /* CredentialProvider.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 32F4E04A2F22348F0035A89B /* CredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -95,7 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3220DBF22F23AFB700D69C2F /* SwiftCBOR in Frameworks */,
+				3220DC0B2F23E98400D69C2F /* SwiftCBOR in Frameworks */,
 				32F4E04D2F22348F0035A89B /* AuthenticationServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -176,7 +176,7 @@
 			);
 			name = CredentialProvider;
 			packageProductDependencies = (
-				3220DBF12F23AFB700D69C2F /* SwiftCBOR */,
+				3220DC0A2F23E98400D69C2F /* SwiftCBOR */,
 			);
 			productName = CredentialProvider;
 			productReference = 32F4E04A2F22348F0035A89B /* CredentialProvider.appex */;
@@ -210,7 +210,7 @@
 			mainGroup = 32F4E02F2F2233520035A89B;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				3220DBF02F23AFB700D69C2F /* XCRemoteSwiftPackageReference "SwiftCBOR" */,
+				3220DC092F23E98400D69C2F /* XCRemoteSwiftPackageReference "SwiftCBOR" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 32F4E0392F2233520035A89B /* Products */;
@@ -543,20 +543,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3220DBF02F23AFB700D69C2F /* XCRemoteSwiftPackageReference "SwiftCBOR" */ = {
+		3220DC092F23E98400D69C2F /* XCRemoteSwiftPackageReference "SwiftCBOR" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/valpackett/SwiftCBOR";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = exactVersion;
+				version = 0.6.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3220DBF12F23AFB700D69C2F /* SwiftCBOR */ = {
+		3220DC0A2F23E98400D69C2F /* SwiftCBOR */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3220DBF02F23AFB700D69C2F /* XCRemoteSwiftPackageReference "SwiftCBOR" */;
+			package = 3220DC092F23E98400D69C2F /* XCRemoteSwiftPackageReference "SwiftCBOR" */;
 			productName = SwiftCBOR;
 		};
 /* End XCSwiftPackageProductDependency section */

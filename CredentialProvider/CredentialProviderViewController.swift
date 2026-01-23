@@ -35,9 +35,9 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             return
         }
         
+        let credentialID = Data((0..<16).map { _ in UInt8.random(in: 0...UInt8.max) })
+        
         do {
-            let credentialID = Data((0..<16).map { _ in UInt8.random(in: 0...UInt8.max) })
-            
             let response = try createPasskeyRegistrationCredentialForPasskeyRegistration(
                 credentialID: credentialID, identity: identity, clientDataHash: passkeyRequest.clientDataHash
             )
@@ -48,11 +48,12 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
                     try await storeToCredentialIdentityStore(credentialID: credentialID, identity: identity)
                     await extensionContext.completeRegistrationRequest(using: response)
                 } catch {
-                    try? deleteCredentialIdentity(credentialID: credentialID)
+                    try? deletePasskey(credentialID: credentialID)
                     failed(error)
                 }
             }
         } catch {
+            try? deletePasskey(credentialID: credentialID)
             failed(error)
         }
     }
@@ -100,6 +101,7 @@ func generateSecretKey(credentialID: Data) throws -> SecKey {
             kSecAttrIsPermanent: true,
             kSecAttrApplicationTag: credentialID,
             kSecAttrAccessControl: accessControl,
+            kSecAttrAccessGroup: group,
         ]
     ] as CFDictionary
 
