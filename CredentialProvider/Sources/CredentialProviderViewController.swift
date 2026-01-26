@@ -9,23 +9,34 @@ import AuthenticationServices
 import os
 import SwiftCBOR
 import LocalAuthentication
+import SwiftUI
 
 let logger = Logger(subsystem: "com.malt03.LocalPasskeyManager", category: "CredentialProvider")
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
     @IBOutlet var errorLabel: NSTextField!
-    
-    private var error: Error?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        logger.info("viewDidLoad")
+    private let viewModel = CredentialProviderViewModel()
+    private var isCanceled = false
+
+    override func loadView() {
+        let hostingView = NSHostingView(rootView: CredentialProviderView(viewModel: viewModel, close: { [weak self] in
+            guard let s = self else { return }
+            let code = s.isCanceled ? ASExtensionError.userCanceled : ASExtensionError.failed
+            s.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: code.rawValue))
+        }))
+        self.view = hostingView
     }
     
     private func failed(_ error: Error) {
         logger.debug("failed: \(error)")
-        errorLabel.stringValue = "Failed: \(error.localizedDescription)"
-        self.error = error
+        viewModel.message = "\(error.localizedDescription)"
+        viewModel.status = .failure
+        if let error = error as? LAError, error.code == LAError.userCancel {
+            isCanceled = true
+        } else {
+            isCanceled = false
+        }
     }
 
     override func prepareInterface(forPasskeyRegistration registrationRequest: any ASCredentialRequest) {
@@ -57,19 +68,6 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     
     override func prepareInterfaceToProvideCredential(for credentialRequest: any ASCredentialRequest) {
         logger.info("prepareInterface(forPasskeyRegistration:) called")
-    }
-
-    @IBAction func cancel(_ sender: AnyObject?) {
-       
-        if self.error == nil {
-            extensionContext.cancelRequest(
-                withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue)
-            )
-        } else {
-            extensionContext.cancelRequest(
-                withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue)
-            )
-        }
     }
 }
 

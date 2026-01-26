@@ -19,5 +19,7 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>$(PRODUCT_MODULE_NAME).CredentialProviderViewController</string>
 	</dict>
+	<key>NSExtensionPrincipalClass</key>
+	<string>CredentialProviderViewController</string>
 </dict>
 </plist>
