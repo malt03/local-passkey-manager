@@ -8,7 +8,6 @@
 import Foundation
 import AuthenticationServices
 import SwiftCBOR
-import os
 
 func createPasskeyRegistrationCredentialForPasskeyRegistration(
     credentialID: Data, identity: ASPasskeyCredentialIdentity, clientDataHash: Data

@@ -8,7 +8,6 @@
 import Foundation
 import SwiftCBOR
 import CryptoKit
-import os
 
 struct AuthenticatorData {
     struct CredentialData {

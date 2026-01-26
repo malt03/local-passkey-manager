@@ -8,6 +8,7 @@
 import AuthenticationServices
 import os
 import SwiftCBOR
+import LocalAuthentication
 
 let logger = Logger(subsystem: "com.malt03.LocalPasskeyManager", category: "CredentialProvider")
 
@@ -21,58 +22,41 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         logger.info("viewDidLoad")
     }
     
-    private var registrationRequest: ASPasskeyCredentialRequest?
-    
-    func failed(_ error: Error) {
+    private func failed(_ error: Error) {
         logger.debug("failed: \(error)")
-        errorLabel.stringValue = "Failed: \(error)"
+        errorLabel.stringValue = "Failed: \(error.localizedDescription)"
         self.error = error
-        registrationRequest = nil
     }
 
     override func prepareInterface(forPasskeyRegistration registrationRequest: any ASCredentialRequest) {
-        guard let passkeyRequest = registrationRequest as? ASPasskeyCredentialRequest else {
-            failed(CredentialProviderError.unexpectedCredentialRequest(registrationRequest))
-            return
-        }
-        
-        self.registrationRequest = passkeyRequest
-    }
-    
-    override func prepareInterfaceToProvideCredential(for credentialRequest: any ASCredentialRequest) {
-        logger.info("prepareInterface(forPasskeyRegistration:) called")
-    }
-    
-    @IBAction func register(_ sender: AnyObject?) {
         guard
-            let passkeyRequest = registrationRequest,
+            let passkeyRequest = registrationRequest as? ASPasskeyCredentialRequest,
             let identity = passkeyRequest.credentialIdentity as? ASPasskeyCredentialIdentity
         else {
             failed(CredentialProviderError.unexpectedCredentialRequest(registrationRequest))
             return
         }
-        registrationRequest = nil
         
-        let credentialID = Data((0..<16).map { _ in UInt8.random(in: 0...UInt8.max) })
-        
-        do {
-            let response = try createPasskeyRegistrationCredentialForPasskeyRegistration(
-                credentialID: credentialID, identity: identity, clientDataHash: passkeyRequest.clientDataHash
-            )
-            try saveCredentialIdentity(credentialID: credentialID, identity: identity)
-            Task {
-                do {
-                    try await storeToCredentialIdentityStore(credentialID: credentialID, identity: identity)
-                    await extensionContext.completeRegistrationRequest(using: response)
-                } catch {
-                    try? deletePasskey(credentialID: credentialID)
-                    failed(error)
-                }
+        Task {
+            let credentialID = Data((0..<16).map { _ in UInt8.random(in: 0...UInt8.max) })
+            do {
+                try await LAContext().evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Register a passkey")
+
+                let response = try createPasskeyRegistrationCredentialForPasskeyRegistration(
+                    credentialID: credentialID, identity: identity, clientDataHash: passkeyRequest.clientDataHash
+                )
+                try saveCredentialIdentity(credentialID: credentialID, identity: identity)
+                try await storeToCredentialIdentityStore(credentialID: credentialID, identity: identity)
+                await extensionContext.completeRegistrationRequest(using: response)
+            } catch {
+                try? deletePasskey(credentialID: credentialID)
+                failed(error)
             }
-        } catch {
-            try? deletePasskey(credentialID: credentialID)
-            failed(error)
         }
+    }
+    
+    override func prepareInterfaceToProvideCredential(for credentialRequest: any ASCredentialRequest) {
+        logger.info("prepareInterface(forPasskeyRegistration:) called")
     }
 
     @IBAction func cancel(_ sender: AnyObject?) {
