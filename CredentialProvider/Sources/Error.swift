@@ -11,5 +11,5 @@ enum CredentialProviderError: Error {
     case setItemFailed(OSStatus)
     case unexpectedPublicKeyFormat(UInt8)
     case publicKeyExtractionFailed
-    case unexpectedCredentialRequest(ASCredentialRequest)
+    case unexpectedCredentialRequest(ASCredentialRequest?)
 }

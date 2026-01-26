@@ -8,6 +8,7 @@
 import Foundation
 import AuthenticationServices
 import SwiftCBOR
+import os
 
 func createPasskeyRegistrationCredentialForPasskeyRegistration(
     credentialID: Data, identity: ASPasskeyCredentialIdentity, clientDataHash: Data
@@ -19,11 +20,13 @@ func createPasskeyRegistrationCredentialForPasskeyRegistration(
         privateKey: privateKey
     )
     let encoder = CodableCBOREncoder()
+    let attestationObjectData = try encoder.encode(attestationObject)
+
     return ASPasskeyRegistrationCredential(
         relyingParty: identity.relyingPartyIdentifier,
         clientDataHash: clientDataHash,
         credentialID: credentialID,
-        attestationObject: try encoder.encode(attestationObject)
+        attestationObject: attestationObjectData,
     )
 }
 

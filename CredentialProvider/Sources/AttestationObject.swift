@@ -8,6 +8,7 @@
 import Foundation
 import SwiftCBOR
 import CryptoKit
+import os
 
 struct AuthenticatorData {
     struct CredentialData {
@@ -68,10 +69,18 @@ struct AuthenticatorData {
     func encode() throws -> Data {
         let rpIDHash = SHA256.hash(data: relyingPartyIdentifier.data(using: .utf8)!)
         
-        let baseFlags: UInt8 = 0b00000101
+        // UP (User Present): bit 0
+        // UV (User Verified): bit 2
+        // BE (Backup Eligible): bit 3
+        // BS (Backup State): bit 4
+        // Note: BE and BS should be 0 for device-bound credentials,
+        //       but Apple's Credential Provider Extension requires them to be 1.
+        //       See: https://developer.apple.com/forums/thread/813844
+        let baseFlags: UInt8 = 0b00011101
         let flags: UInt8
         let encodedCredentialData: AnySequence<UInt8>
         if let credentialData {
+            // AT (Attested Credential Data present): bit 6
             flags = baseFlags | 0b01000000
             encodedCredentialData = AnySequence(try credentialData.encode())
         } else {
