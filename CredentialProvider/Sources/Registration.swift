@@ -46,7 +46,8 @@ private func generateSecretKey(credentialID: Data) throws -> SecKey {
             kSecAttrApplicationTag: credentialID,
             kSecAttrAccessControl: accessControl,
             kSecAttrAccessGroup: group,
-        ]
+        ],
+        kSecUseDataProtectionKeychain: true,
     ] as CFDictionary
 
     var error: Unmanaged<CFError>?

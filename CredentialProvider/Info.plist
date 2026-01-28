@@ -20,6 +20,6 @@
 		<string>$(PRODUCT_MODULE_NAME).CredentialProviderViewController</string>
 	</dict>
 	<key>NSExtensionPrincipalClass</key>
-	<string>CredentialProviderViewController</string>
+	<string>$(PRODUCT_MODULE_NAME).CredentialProviderViewController</string>
 </dict>
 </plist>

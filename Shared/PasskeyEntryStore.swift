@@ -6,11 +6,27 @@
 //
 
 import Foundation
+import SwiftCBOR
+import AuthenticationServices
+import os
 
 let group = "group.com.malt03.LocalPasskeyManager"
+let logger = Logger(subsystem: "com.malt03.LocalPasskeyManager", category: "CredentialProvider")
 
 enum SharedError: Error {
     case deleteItemFailed(OSStatus)
+}
+extension SharedError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .deleteItemFailed(let osStatus):
+            return "Delete item failed: \(osStatusToString(osStatus))"
+        }
+    }
+}
+
+func osStatusToString(_ osStatus: OSStatus) -> String {
+    return SecCopyErrorMessageString(osStatus, nil) as String? ?? String(osStatus)
 }
 
 struct PasskeyEntry: Codable {
@@ -33,6 +49,7 @@ private func deleteCredentialIdentity(credentialID: Data) throws {
         kSecClass: kSecClassGenericPassword,
         kSecAttrAccount: credentialID.base64EncodedString(),
         kSecAttrAccessGroup: group,
+        kSecUseDataProtectionKeychain: true,
     ] as CFDictionary)
 }
 
@@ -41,6 +58,7 @@ private func deleteSecretKey(credentialID: Data) throws {
         kSecClass: kSecClassKey,
         kSecAttrApplicationTag: credentialID,
         kSecAttrAccessGroup: group,
+        kSecUseDataProtectionKeychain: true,
     ] as CFDictionary)
 }
 

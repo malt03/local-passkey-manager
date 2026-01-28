@@ -10,6 +10,7 @@
 		3220DC0B2F23E98400D69C2F /* SwiftCBOR in Frameworks */ = {isa = PBXBuildFile; productRef = 3220DC0A2F23E98400D69C2F /* SwiftCBOR */; };
 		32F4E04D2F22348F0035A89B /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32F4E04C2F22348F0035A89B /* AuthenticationServices.framework */; };
 		32F4E0582F22348F0035A89B /* CredentialProvider.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 32F4E04A2F22348F0035A89B /* CredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		32FC1C8D2F282960005E1970 /* SwiftCBOR in Frameworks */ = {isa = PBXBuildFile; productRef = 32FC1C8C2F282960005E1970 /* SwiftCBOR */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32FC1C8D2F282960005E1970 /* SwiftCBOR in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +155,7 @@
 			);
 			name = LocalPasskeyManager;
 			packageProductDependencies = (
+				32FC1C8C2F282960005E1970 /* SwiftCBOR */,
 			);
 			productName = LocalPasskeyManager;
 			productReference = 32F4E0382F2233520035A89B /* LocalPasskeyManager.app */;
@@ -555,6 +558,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		3220DC0A2F23E98400D69C2F /* SwiftCBOR */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3220DC092F23E98400D69C2F /* XCRemoteSwiftPackageReference "SwiftCBOR" */;
+			productName = SwiftCBOR;
+		};
+		32FC1C8C2F282960005E1970 /* SwiftCBOR */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3220DC092F23E98400D69C2F /* XCRemoteSwiftPackageReference "SwiftCBOR" */;
 			productName = SwiftCBOR;

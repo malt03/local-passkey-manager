@@ -11,11 +11,7 @@ import SwiftCBOR
 import LocalAuthentication
 import SwiftUI
 
-let logger = Logger(subsystem: "com.malt03.LocalPasskeyManager", category: "CredentialProvider")
-
 class CredentialProviderViewController: ASCredentialProviderViewController {
-    @IBOutlet var errorLabel: NSTextField!
-
     private let viewModel = CredentialProviderViewModel()
     private var isCanceled = false
 
@@ -40,9 +36,8 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     }
 
     override func prepareInterface(forPasskeyRegistration registrationRequest: any ASCredentialRequest) {
-        guard
-            let passkeyRequest = registrationRequest as? ASPasskeyCredentialRequest,
-            let identity = passkeyRequest.credentialIdentity as? ASPasskeyCredentialIdentity
+        guard let passkeyRequest = registrationRequest as? ASPasskeyCredentialRequest,
+              let identity = passkeyRequest.credentialIdentity as? ASPasskeyCredentialIdentity
         else {
             failed(CredentialProviderError.unexpectedCredentialRequest(registrationRequest))
             return
@@ -101,6 +96,7 @@ func saveCredentialIdentity(credentialID: Data, identity: ASPasskeyCredentialIde
         kSecValueData: entryData,
         kSecAttrAccessible: kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
         kSecAttrAccessGroup: group,
+        kSecUseDataProtectionKeychain: true,
     ] as CFDictionary
     
     let status = SecItemAdd(query, nil)
