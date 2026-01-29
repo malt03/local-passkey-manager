@@ -27,9 +27,11 @@ extension ViewerError: LocalizedError {
     }
 }
 
-struct StoredPasskeyEntry {
+struct StoredPasskeyEntry: Identifiable {
+    var id: Data { credentialID }
     let credentialID: Data
     let entry: PasskeyEntry
+    let creationDate: Date
 }
 
 func listPasskeyEntries() throws -> [StoredPasskeyEntry] {
@@ -60,12 +62,13 @@ func listPasskeyEntries() throws -> [StoredPasskeyEntry] {
     return try items.map { item in
         guard let accountString = item[kSecAttrAccount as String] as? String,
               let credentialID = Data(base64Encoded: accountString),
-              let entryData = item[kSecValueData as String] as? Data
+              let entryData = item[kSecValueData as String] as? Data,
+              let creationDate = item[kSecAttrCreationDate as String] as? Date
         else {
             throw ViewerError.unexpectedItem(item)
         }
-        
+
         let entry = try decoder.decode(PasskeyEntry.self, from: entryData)
-        return StoredPasskeyEntry(credentialID: credentialID, entry: entry)
+        return StoredPasskeyEntry(credentialID: credentialID, entry: entry, creationDate: creationDate)
     }
 }
