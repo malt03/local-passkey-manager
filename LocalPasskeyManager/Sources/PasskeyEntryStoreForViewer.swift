@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftCBOR
+import AuthenticationServices
 
 enum ViewerError: Error {
     case queryFailed(OSStatus)
@@ -71,4 +72,16 @@ func listPasskeyEntries() throws -> [StoredPasskeyEntry] {
         let entry = try decoder.decode(PasskeyEntry.self, from: entryData)
         return StoredPasskeyEntry(credentialID: credentialID, entry: entry, creationDate: creationDate)
     }
+}
+
+func syncCredentialIdentityStore(entries: [StoredPasskeyEntry]) async throws {
+    let identities = entries.map { stored in
+        ASPasskeyCredentialIdentity(
+            relyingPartyIdentifier: stored.entry.relyingPartyIdentifier,
+            userName: stored.entry.userName,
+            credentialID: stored.credentialID,
+            userHandle: stored.entry.userHandle
+        )
+    }
+    try await ASCredentialIdentityStore.shared.replaceCredentialIdentities(identities)
 }

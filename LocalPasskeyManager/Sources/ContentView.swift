@@ -54,10 +54,10 @@ struct ContentView: View {
             .navigationTitle("Passkeys")
         }
         .onAppear {
-            loadEntries()
+            loadEntries(first: true)
         }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
-            loadEntries()
+            loadEntries(first: false)
         }
         .alert("Error", isPresented: .constant(errorMessage != nil)) {
             Button("OK") { errorMessage = nil }
@@ -71,10 +71,15 @@ struct ContentView: View {
         }
     }
 
-    private func loadEntries() {
+    private func loadEntries(first: Bool) {
         do {
             entries = try listPasskeyEntries()
             entries.sort(using: sortOrder)
+            if first {
+                Task {
+                    try? await syncCredentialIdentityStore(entries: entries)
+                }
+            }
         } catch {
             errorMessage = error.localizedDescription
         }
