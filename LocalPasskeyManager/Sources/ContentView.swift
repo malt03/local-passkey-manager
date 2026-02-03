@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  LocalPasskeyManager
 //
-//  Created by 村田紘司 on 2026/01/22.
+//  Created by Koji Murata on 2026/01/22.
 //
 
 import SwiftUI

@@ -2,7 +2,7 @@
 //  CredentialProviderView.swift
 //  LocalPasskeyManager
 //
-//  Created by 村田紘司 on 2026/01/27.
+//  Created by Koji Murata on 2026/01/27.
 //
 
 import SwiftUI

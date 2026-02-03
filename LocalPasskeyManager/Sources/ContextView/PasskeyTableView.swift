@@ -2,7 +2,7 @@
 //  PasskeyTableView.swift
 //  LocalPasskeyManager
 //
-//  Created by 村田紘司 on 2026/02/03.
+//  Created by Koji Murata on 2026/02/03.
 //
 
 import SwiftUI
