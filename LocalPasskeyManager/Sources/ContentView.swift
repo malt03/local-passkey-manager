@@ -53,6 +53,9 @@ struct ContentView: View {
             .searchFocused(isSearchFocused)
             .navigationTitle("Passkeys")
         }
+        .onAppear {
+            loadEntries()
+        }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             loadEntries()
         }
