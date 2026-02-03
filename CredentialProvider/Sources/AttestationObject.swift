@@ -11,6 +11,9 @@ import CryptoKit
 
 struct AuthenticatorData {
     struct CredentialData {
+        // Note: Apple currently overwrites AAGUID to all zeros for third-party
+        // Credential Provider Extensions, so this value has no effect.
+        // See: https://developer.apple.com/forums/thread/814547
         static let aaguid = Data([
             0xec, 0x78, 0xfa, 0xe8, 0xb2, 0xe0, 0x56, 0x97,
             0x8e, 0x94, 0x7c, 0x77, 0x28, 0xc3, 0x95, 0x00
