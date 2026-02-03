@@ -12,6 +12,10 @@ enum CredentialProviderError: Error {
     case unexpectedPublicKeyFormat(UInt8)
     case publicKeyExtractionFailed
     case unexpectedCredentialRequest(ASCredentialRequest?)
+    case loadEntryFailed(OSStatus)
+    case loadKeyFailed(OSStatus)
+    case updateEntryFailed(OSStatus)
+    case unexpectedEntryData
 }
 
 extension CredentialProviderError: LocalizedError {
@@ -27,6 +31,14 @@ extension CredentialProviderError: LocalizedError {
             return "Unexpected credential request: \(credentialRequest)"
         case .unexpectedCredentialRequest(nil):
             return "Unexpected credential request: nil"
+        case .loadEntryFailed(let osStatus):
+            return "Failed to load entry from keychain: \(osStatusToString(osStatus))"
+        case .loadKeyFailed(let osStatus):
+            return "Failed to load key from keychain: \(osStatusToString(osStatus))"
+        case .updateEntryFailed(let osStatus):
+            return "Failed to update entry in keychain: \(osStatusToString(osStatus))"
+        case .unexpectedEntryData:
+            return "Unexpected entry data format"
         }
     }
 }

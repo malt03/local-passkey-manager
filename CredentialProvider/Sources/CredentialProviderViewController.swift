@@ -25,7 +25,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     }
     
     private func failed(_ error: Error) {
-        logger.debug("failed: \(error)")
+        logger.error("failed: \(error)")
         viewModel.message = "\(error.localizedDescription)"
         viewModel.status = .failure
         if let error = error as? LAError, error.code == LAError.userCancel {
@@ -43,27 +43,63 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             return
         }
         
-        Task {
+        let clientDataHash = passkeyRequest.clientDataHash
+        Task.detached {
             let credentialID = Data((0..<16).map { _ in UInt8.random(in: 0...UInt8.max) })
             let entry = PasskeyEntry(identity)
             do {
                 try await LAContext().evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Register a passkey")
 
                 let response = try createPasskeyRegistrationCredentialForPasskeyRegistration(
-                    credentialID: credentialID, identity: identity, clientDataHash: passkeyRequest.clientDataHash
+                    credentialID: credentialID, identity: identity, clientDataHash: clientDataHash
                 )
                 try saveCredentialIdentity(credentialID: credentialID, entry: entry)
                 try await storeToCredentialIdentityStore(credentialID: credentialID, identity: identity)
-                await extensionContext.completeRegistrationRequest(using: response)
+                await MainActor.run {
+                    self.extensionContext.completeRegistrationRequest(using: response)
+                }
             } catch {
                 try? await deletePasskey(credentialID: credentialID, entry: entry)
-                failed(error)
+                await MainActor.run { self.failed(error) }
             }
         }
     }
     
+    override func prepareInterfaceForExtensionConfiguration() {
+        logger.debug("prepareInterfaceForExtensionConfiguration")
+    }
+
+    override func provideCredentialWithoutUserInteraction(for credentialRequest: any ASCredentialRequest) {
+        extensionContext.cancelRequest(withError: NSError(
+            domain: ASExtensionErrorDomain,
+            code: ASExtensionError.userInteractionRequired.rawValue
+        ))
+    }
+
     override func prepareInterfaceToProvideCredential(for credentialRequest: any ASCredentialRequest) {
-        logger.info("prepareInterface(forPasskeyRegistration:) called")
+        guard let passkeyRequest = credentialRequest as? ASPasskeyCredentialRequest,
+              let identity = passkeyRequest.credentialIdentity as? ASPasskeyCredentialIdentity
+        else {
+            failed(CredentialProviderError.unexpectedCredentialRequest(credentialRequest))
+            return
+        }
+
+        let credentialID = identity.credentialID
+        let clientDataHash = passkeyRequest.clientDataHash
+        Task.detached {
+            do {
+                let response = try createPasskeyAssertionCredential(
+                    credentialID: credentialID,
+                    identity: identity,
+                    clientDataHash: clientDataHash
+                )
+                await MainActor.run {
+                    self.extensionContext.completeAssertionRequest(using: response)
+                }
+            } catch {
+                await MainActor.run { self.failed(error) }
+            }
+        }
     }
 }
 
