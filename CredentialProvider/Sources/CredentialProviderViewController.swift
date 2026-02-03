@@ -34,6 +34,20 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             isCanceled = false
         }
     }
+    
+    private func showNotSupported() {
+        viewModel.message = "This feature is not supported. Please select a passkey from the system dialog."
+        viewModel.status = .failure
+        isCanceled = true
+    }
+
+    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        showNotSupported()
+    }
+
+    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier], requestParameters: ASPasskeyCredentialRequestParameters) {
+        showNotSupported()
+    }
 
     override func prepareInterface(forPasskeyRegistration registrationRequest: any ASCredentialRequest) {
         guard let passkeyRequest = registrationRequest as? ASPasskeyCredentialRequest,
@@ -65,10 +79,6 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         }
     }
     
-    override func prepareInterfaceForExtensionConfiguration() {
-        logger.debug("prepareInterfaceForExtensionConfiguration")
-    }
-
     override func provideCredentialWithoutUserInteraction(for credentialRequest: any ASCredentialRequest) {
         extensionContext.cancelRequest(withError: NSError(
             domain: ASExtensionErrorDomain,
