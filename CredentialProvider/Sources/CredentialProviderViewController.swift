@@ -6,10 +6,9 @@
 //
 
 import AuthenticationServices
-import os
-import SwiftCBOR
 import LocalAuthentication
 import SwiftUI
+import os
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
     private let viewModel = CredentialProviderViewModel()
@@ -110,43 +109,5 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
                 await MainActor.run { self.failed(error) }
             }
         }
-    }
-}
-
-extension PasskeyEntry {
-    init(_ identity: ASPasskeyCredentialIdentity) {
-        self.relyingPartyIdentifier = identity.relyingPartyIdentifier
-        self.userName = identity.userName
-        self.userHandle = identity.userHandle
-        self.signCount = 0
-    }
-}
-
-func storeToCredentialIdentityStore(credentialID: Data, identity: ASPasskeyCredentialIdentity) async throws {
-    let passkeyIdentity = ASPasskeyCredentialIdentity(
-        relyingPartyIdentifier: identity.relyingPartyIdentifier,
-        userName: identity.userName,
-        credentialID: credentialID,
-        userHandle: identity.userHandle,
-    )
-    try await ASCredentialIdentityStore.shared.saveCredentialIdentities([passkeyIdentity])
-}
-
-func saveCredentialIdentity(credentialID: Data, entry: PasskeyEntry) throws {
-    let encoder = CodableCBOREncoder()
-    let entryData = try encoder.encode(entry)
-    
-    let query = [
-        kSecClass: kSecClassGenericPassword,
-        kSecAttrAccount: credentialID.base64EncodedString(),
-        kSecValueData: entryData,
-        kSecAttrAccessible: kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
-        kSecAttrAccessGroup: group,
-        kSecUseDataProtectionKeychain: true,
-    ] as CFDictionary
-    
-    let status = SecItemAdd(query, nil)
-    if status != errSecSuccess {
-        throw CredentialProviderError.setItemFailed(status)
     }
 }
