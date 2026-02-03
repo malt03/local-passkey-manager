@@ -33,7 +33,7 @@ private func generateSecretKey(credentialID: Data) throws -> SecKey {
     let accessControl = SecAccessControlCreateWithFlags(
         nil,
         kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
-        [.privateKeyUsage, .userPresence],
+        [.privateKeyUsage, .biometryAny],
         nil
     )!
 
