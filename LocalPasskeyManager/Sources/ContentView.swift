@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var errorMessage: String?
     @State private var searchText = ""
     @State private var entryToDelete: StoredPasskeyEntry?
+    var isSearchFocused: FocusState<Bool>.Binding
 
     private var filteredEntries: [StoredPasskeyEntry] {
         if searchText.isEmpty {
@@ -49,6 +50,7 @@ struct ContentView: View {
                 }
             }
             .searchable(text: $searchText, prompt: "Filter by Service or User Name")
+            .searchFocused(isSearchFocused)
             .navigationTitle("Passkeys")
         }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
@@ -86,8 +88,4 @@ struct ContentView: View {
             }
         }
     }
-}
-
-#Preview {
-    ContentView()
 }

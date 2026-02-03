@@ -44,5 +44,20 @@ struct PasskeyTableView: View {
                 }
             }
         }
+        .onCopyCommand {
+            guard let id = selection,
+                  let entry = entries.first(where: { $0.id == id }) else {
+                return []
+            }
+            let item = NSItemProvider(object: entry.entry.relyingPartyIdentifier as NSString)
+            return [item]
+        }
+        .onDeleteCommand {
+            guard let id = selection,
+                  let entry = entries.first(where: { $0.id == id }) else {
+                return
+            }
+            onDelete(entry)
+        }
     }
 }

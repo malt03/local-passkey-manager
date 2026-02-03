@@ -9,9 +9,19 @@ import SwiftUI
 
 @main
 struct LocalPasskeyManagerApp: App {
+    @FocusState private var isSearchFocused: Bool
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(isSearchFocused: $isSearchFocused)
+        }
+        .commands {
+            CommandGroup(after: .textEditing) {
+                Button("Search") {
+                    isSearchFocused = true
+                }
+                .keyboardShortcut("f", modifiers: .command)
+            }
         }
     }
 }
