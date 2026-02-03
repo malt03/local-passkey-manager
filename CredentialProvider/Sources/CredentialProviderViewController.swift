@@ -59,7 +59,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
                     self.extensionContext.completeRegistrationRequest(using: response)
                 }
             } catch {
-                try? await deletePasskey(credentialID: credentialID, entry: entry)
+                try? deletePasskey(credentialID: credentialID)
                 await MainActor.run { self.failed(error) }
             }
         }

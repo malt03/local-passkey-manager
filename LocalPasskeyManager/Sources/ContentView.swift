@@ -86,14 +86,18 @@ struct ContentView: View {
     }
 
     private func deleteEntry(_ stored: StoredPasskeyEntry) {
-        Task {
-            do {
-                try await deletePasskey(credentialID: stored.credentialID, entry: stored.entry)
-                entries.removeAll { $0.id == stored.id }
-                selection = nil
-            } catch {
-                errorMessage = error.localizedDescription
+        do {
+            try deletePasskey(credentialID: stored.credentialID)
+            entries.removeAll { $0.id == stored.id }
+            selection = nil
+            // Use replaceCredentialIdentities instead of removeCredentialIdentities
+            // because removeCredentialIdentities has a bug that removes all passkeys
+            // for the same relyingPartyIdentifier, not just the specified one
+            Task {
+                try await syncCredentialIdentityStore(entries: entries)
             }
+        } catch {
+            errorMessage = error.localizedDescription
         }
     }
 }
