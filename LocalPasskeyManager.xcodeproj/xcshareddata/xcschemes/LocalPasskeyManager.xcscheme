@@ -11,7 +11,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "cp -R &quot;${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app&quot; &quot;/Applications/&quot;&#10;pluginkit -a &quot;/Applications/${PRODUCT_NAME}.app/Contents/PlugIns/CredentialProvider.appex&quot;&#10;">
+               scriptText = "cp -R &quot;${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app&quot; &quot;/Applications/&quot;&#10;pluginkit -a &quot;/Applications/${PRODUCT_NAME}.app/Contents/PlugIns/CredentialProvider.appex&quot; || true&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"

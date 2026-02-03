@@ -38,7 +38,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		32F4E0382F2233520035A89B /* LocalPasskeyManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocalPasskeyManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		32F4E0382F2233520035A89B /* LocalPasskey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocalPasskey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32F4E04A2F22348F0035A89B /* CredentialProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CredentialProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		32F4E04C2F22348F0035A89B /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -119,7 +119,7 @@
 		32F4E0392F2233520035A89B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				32F4E0382F2233520035A89B /* LocalPasskeyManager.app */,
+				32F4E0382F2233520035A89B /* LocalPasskey.app */,
 				32F4E04A2F22348F0035A89B /* CredentialProvider.appex */,
 			);
 			name = Products;
@@ -158,7 +158,7 @@
 				32FC1C8C2F282960005E1970 /* SwiftCBOR */,
 			);
 			productName = LocalPasskeyManager;
-			productReference = 32F4E0382F2233520035A89B /* LocalPasskeyManager.app */;
+			productReference = 32F4E0382F2233520035A89B /* LocalPasskey.app */;
 			productType = "com.apple.product-type.application";
 		};
 		32F4E0492F22348F0035A89B /* CredentialProvider */ = {
@@ -401,6 +401,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = LocalPasskey;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -408,7 +409,7 @@
 				);
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.malt03.LocalPasskeyManager;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = LocalPasskey;
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -433,6 +434,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = LocalPasskey;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -440,7 +442,7 @@
 				);
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.malt03.LocalPasskeyManager;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = LocalPasskey;
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;

@@ -51,7 +51,7 @@ struct ContentView: View {
             }
             .searchable(text: $searchText, prompt: "Filter by Service or User Name")
             .searchFocused(isSearchFocused)
-            .navigationTitle("Passkeys")
+            .navigationTitle("LocalPasskey")
         }
         .onAppear {
             loadEntries(first: true)
