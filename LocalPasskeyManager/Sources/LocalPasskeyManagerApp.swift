@@ -11,17 +11,22 @@ import SwiftUI
 struct LocalPasskeyManagerApp: App {
     @FocusState private var isSearchFocused: Bool
 
+    init() {
+        NSWindow.allowsAutomaticWindowTabbing = false
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView(isSearchFocused: $isSearchFocused)
         }
         .commands {
-            CommandGroup(after: .textEditing) {
+            CommandGroup(after: .newItem) {
                 Button("Search") {
                     isSearchFocused = true
                 }
                 .keyboardShortcut("f", modifiers: .command)
             }
+            CommandGroup(replacing: .help) { }
         }
     }
 }
