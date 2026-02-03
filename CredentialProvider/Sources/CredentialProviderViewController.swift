@@ -45,17 +45,18 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         
         Task {
             let credentialID = Data((0..<16).map { _ in UInt8.random(in: 0...UInt8.max) })
+            let entry = PasskeyEntry(identity)
             do {
                 try await LAContext().evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Register a passkey")
 
                 let response = try createPasskeyRegistrationCredentialForPasskeyRegistration(
                     credentialID: credentialID, identity: identity, clientDataHash: passkeyRequest.clientDataHash
                 )
-                try saveCredentialIdentity(credentialID: credentialID, identity: identity)
+                try saveCredentialIdentity(credentialID: credentialID, entry: entry)
                 try await storeToCredentialIdentityStore(credentialID: credentialID, identity: identity)
                 await extensionContext.completeRegistrationRequest(using: response)
             } catch {
-                try? deletePasskey(credentialID: credentialID)
+                try? await deletePasskey(credentialID: credentialID, entry: entry)
                 failed(error)
             }
         }
@@ -85,8 +86,7 @@ func storeToCredentialIdentityStore(credentialID: Data, identity: ASPasskeyCrede
     try await ASCredentialIdentityStore.shared.saveCredentialIdentities([passkeyIdentity])
 }
 
-func saveCredentialIdentity(credentialID: Data, identity: ASPasskeyCredentialIdentity) throws {
-    let entry = PasskeyEntry(identity)
+func saveCredentialIdentity(credentialID: Data, entry: PasskeyEntry) throws {
     let encoder = CodableCBOREncoder()
     let entryData = try encoder.encode(entry)
     

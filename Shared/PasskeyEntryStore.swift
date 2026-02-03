@@ -36,11 +36,24 @@ struct PasskeyEntry: Codable {
     let signCount: UInt32
 }
 
-func deletePasskey(credentialID: Data) throws {
-    let results = [
+func deletePasskey(credentialID: Data, entry: PasskeyEntry) async throws {
+    let identity = ASPasskeyCredentialIdentity(
+        relyingPartyIdentifier: entry.relyingPartyIdentifier,
+        userName: entry.userName,
+        credentialID: credentialID,
+        userHandle: entry.userHandle
+    )
+
+    var results = [
         Result { try deleteCredentialIdentity(credentialID: credentialID) },
         Result { try deleteSecretKey(credentialID: credentialID) },
     ]
+    do {
+        try await ASCredentialIdentityStore.shared.removeCredentialIdentities([identity])
+        results.append(.success(()))
+    } catch {
+        results.append(.failure(error))
+    }
     for result in results { try result.get() }
 }
 
