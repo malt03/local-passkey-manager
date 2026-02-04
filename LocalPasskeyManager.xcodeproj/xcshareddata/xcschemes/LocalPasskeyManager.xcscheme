@@ -16,7 +16,7 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "32F4E0372F2233520035A89B"
-                     BuildableName = "LocalPasskeyManager.app"
+                     BuildableName = "LocalPasskey.app"
                      BlueprintName = "LocalPasskeyManager"
                      ReferencedContainer = "container:LocalPasskeyManager.xcodeproj">
                   </BuildableReference>
@@ -34,7 +34,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "32F4E0372F2233520035A89B"
-               BuildableName = "LocalPasskeyManager.app"
+               BuildableName = "LocalPasskey.app"
                BlueprintName = "LocalPasskeyManager"
                ReferencedContainer = "container:LocalPasskeyManager.xcodeproj">
             </BuildableReference>
@@ -63,7 +63,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "32F4E0372F2233520035A89B"
-            BuildableName = "LocalPasskeyManager.app"
+            BuildableName = "LocalPasskey.app"
             BlueprintName = "LocalPasskeyManager"
             ReferencedContainer = "container:LocalPasskeyManager.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "32F4E0372F2233520035A89B"
-            BuildableName = "LocalPasskeyManager.app"
+            BuildableName = "LocalPasskey.app"
             BlueprintName = "LocalPasskeyManager"
             ReferencedContainer = "container:LocalPasskeyManager.xcodeproj">
          </BuildableReference>
