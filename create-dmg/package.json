@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "create-dmg": "^8.0.0"
+  },
+  "scripts": {
+    "create-dmg": "create-dmg --overwrite --no-version-in-filename --identity=8TMNH79595"
+  }
+}
