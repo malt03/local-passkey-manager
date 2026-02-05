@@ -39,6 +39,13 @@ This provides true two-factor authentication in a single step: physical possessi
 
 Ideally, this app wouldn't need to exist. Apple—the company that controls the entire platform, from Secure Enclave to the Passwords app—is in the best position to offer a local-only storage option. Yet they don't. Users who want device-bound passkeys have no choice but to rely on third-party solutions like this one. We hope Apple will eventually provide this option natively, making LocalPasskey obsolete.
 
+### Further Reading
+
+- [Device-Device-Bound vs. Synced Credentials: A Comparative Evaluation of Passkey Authentication](https://arxiv.org/html/2501.07380v1) - University of Oslo
+- [Detecting Compromise of Passkey Storage on the Cloud](https://www.microsoft.com/en-us/research/video/detecting-compromise-of-passkey-storage-on-the-cloud/) - Microsoft Research
+- [Your (Synced) Passkey is Weak](https://yourpasskeyisweak.com/) - DEFCON 33
+- [How Attackers Bypass Synced Passkeys](https://thehackernews.com/2025/10/how-attackers-bypass-synced-passkeys.html) - The Hacker News
+
 ## Installation
 
 ### Build from Source (Recommended)
